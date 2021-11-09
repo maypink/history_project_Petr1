@@ -2,6 +2,18 @@ import pandas as pd
 from typing import List
 from bs4 import BeautifulSoup
 import requests as req
+import os
+from pathlib import Path
+
+
+def check_dir(path: Path):
+    if os.path.exists(path):
+        if os.path.exists(path + '/' + 'raw'):
+            return True
+        else:
+            os.mkdir(path)
+    else:
+        os.mkdir(path)
 
 
 def get_links(url: str) -> List[str]:
@@ -26,6 +38,7 @@ if __name__ == '__main__':
     df_rus = pd.DataFrame({'link': rus_links})
     df_eur = pd.DataFrame({'link': eur_links})
 
+    check_dir(Path('../data/raw/'))
     df_rus.to_csv('../data/raw/rus_links.csv')
     df_eur.to_csv('../data/raw/eur_links.csv')
 

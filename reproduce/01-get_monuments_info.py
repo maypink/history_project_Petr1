@@ -38,13 +38,27 @@ def get_info(df: pd.DataFrame):
     return monuments
 
 
-def save_info(monuments: List[Monument]):
+def check_dir(path: Path):
+    if os.path.exists(path):
+        if os.path.exists(os.path.join(path, 'processed')):
+            return True
+        else:
+            os.mkdir(path)
+    else:
+        os.mkdir(path)
+
+
+def save_info(root: Path, monuments: List[Monument]):
 
     for monument in monuments:
         file_name = monument.name.replace(' ', '_')
-        path = Path('../data/processed/' + file_name)
-        with open(path, 'w', encoding='utf8') as file:
-            json.dump(monument.to_json(), file, ensure_ascii=False)
+        check_dir(root)
+        path = os.path.join(root, 'processed', file_name)
+        try:
+            with open(path, 'w', encoding='utf8') as file:
+                json.dump(monument.to_json(), file, ensure_ascii=False)
+        except OSError:
+            pass
 
 
 if __name__ == '__main__':
@@ -55,7 +69,9 @@ if __name__ == '__main__':
     rus_monuments = get_info(rus_links)
     eur_monuments = get_info(eur_links)
 
-    save_info(rus_monuments)
-    save_info(eur_monuments)
+    root = Path('../data/')
+
+    save_info(root, rus_monuments)
+    save_info(root, eur_monuments)
 
 
