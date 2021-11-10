@@ -58,7 +58,6 @@ def get_info(df: pd.DataFrame):
         coords = get_coords(location)
         monument = Monument(0, name, location, coords, type, status, remove_useless(description))
         monuments.append(monument)
-        break
     return monuments
 
 
@@ -94,8 +93,6 @@ def save_info(root: Path, monuments: List[Monument]):
 
         except OSError:
             pass
-        break
-
 
 if __name__ == '__main__':
 
