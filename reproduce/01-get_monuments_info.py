@@ -9,15 +9,16 @@ import requests as req
 from history_project_Petr1.entities.monument import Monument
 import googlemaps
 
+
 gmaps = googlemaps.Client(key='AIzaSyDPZrHhcjXo8jFH0_dhJnU46UXGgb6h4tI')
 
-def remove_useless(str: str):
-    return str.replace('\r', '').replace('\n', '').replace('\t', '')
+
+def remove_useless(string: str):
+    return string.replace('\r', '').replace('\n', '').replace('\t', '')
+
 
 def get_coords(address: str):
     geocode_result = gmaps.geocode(address)
-    lat = 0
-    lng = 0
     try:
         lat = geocode_result[0]['geometry']['location']['lat']
         lng = geocode_result[0]['geometry']['location']['lng']
@@ -26,7 +27,8 @@ def get_coords(address: str):
         lat = 0
         lng = 0
         
-    return lat, lng
+    return {'lat': lat, 'lng': lng}
+
 
 def get_info(df: pd.DataFrame):
     monuments = []
@@ -54,18 +56,17 @@ def get_info(df: pd.DataFrame):
             if len(par) == 1:
                 description.append(par.contents)
 
-        # lat, lng = get_coords(location)
-
-        monument = Monument(name, location, type, status, description)
+        coords = get_coords(location)
+        monument = Monument(0, name, location, coords, type, status, description)
         monuments.append(monument)
     return monuments
 
 
-def check_dir(path: Path):
+def check_dir(path: Path, key = 1):
     if os.path.exists(path):
         if os.path.exists(os.path.join(path, 'processed')):
             return True
-        else:
+        elif os.path.exists(os.path.join(path, 'processed')) == False & key == 1:
             os.mkdir(os.path.join(path, 'processed'))
     else:
         os.mkdir(path)
@@ -74,12 +75,23 @@ def check_dir(path: Path):
 def save_info(root: Path, monuments: List[Monument]):
 
     for monument in monuments:
-        file_name = monument.name.replace(' ', '_')
+        monument.id = id(monument)
+        file_name = str(monument.id) + '.json'
         check_dir(root)
-        path = os.path.join(root, 'processed', file_name)
+
+        path_coords = os.path.join(root, 'processed', 'coords', file_name)
+        check_dir(os.path.join(root, 'processed', 'coords'), 2)
+
+        path_info = os.path.join(root, 'processed', 'info', file_name)
+        check_dir(os.path.join(root, 'processed', 'info'), 2)
+
         try:
-            with open(path, 'w', encoding='utf8') as file:
-                json.dump(monument.to_json(), file, ensure_ascii=False)
+            with open(path_coords, 'w', encoding='utf8') as file:
+                json.dump(monument.coords_to_json(), file, ensure_ascii=False)
+
+            with open(path_info, 'w', encoding='utf8') as file2:
+                json.dump(monument.info_to_json(), file2, ensure_ascii=False)
+
         except OSError:
             pass
 
