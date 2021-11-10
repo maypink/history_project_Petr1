@@ -38,6 +38,10 @@ def get_info(df: pd.DataFrame):
         info = soup.find_all('div', class_='full-description__mini-desc')[0].find_all('p')
         location = info[0].contents[2]
 
+        image_urls = []
+        for image in soup.find_all('a', class_='gallery_monuments'):
+            image_urls.append(f"http://petersmonuments.ru/{image.attrs['href']}")
+
         type = ''
         if len(info) > 1:
             type = info[1].contents[2]

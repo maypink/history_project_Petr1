@@ -98,6 +98,17 @@ body {
     background-color: aqua;
 }
 
+.status::before {
+    content: "Статус";
+}
+
+.status::after {
+    content: '';
+    height: 1px;
+    display: block;
+    background-color: aqua;
+}
+
 .description::before {
     content: "Описание";
 }

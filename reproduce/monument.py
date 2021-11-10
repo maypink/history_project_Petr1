@@ -11,6 +11,7 @@ class Monument:
     type: str
     status: str
     description: List[List[str]]    # list for each paragraph
+    imageURLs: List[str]
 
     @property
     def name(self):
@@ -51,18 +52,27 @@ class Monument:
     @description.setter
     def description(self, description):
         self._description = description
+    
+    @property
+    def imageURLs(self):
+        return self._imageURLs
+
+    @imageURLs.setter
+    def name(self, imageURLs):
+        self._imageURLs = imageURLs
 
     @classmethod
     def from_json(cls, json_object: str):
         monument_info = json.loads(json_object)
         return cls(monument_info['name'], monument_info['location'],
                    monument_info['type'], monument_info['status'],
-                   monument_info['description'])
+                   monument_info['description'], monument_info['imageURLs'])
 
     def to_json(self) -> Dict:
         monument_json = dict({'name': self.name,
                               'location': self.location,
                               'type': self.type,
                               'status': self.status,
-                              'description': self.description})
+                              'description': self.description,
+                              'imageURLs': self.imageURLs})
         return monument_json
