@@ -14,7 +14,7 @@ gmaps = googlemaps.Client(key='AIzaSyDPZrHhcjXo8jFH0_dhJnU46UXGgb6h4tI')
 
 
 def remove_useless(string: str):
-    return string.replace('\r', '').replace('\n', '').replace('\t', '')
+    return string.replace('\r', '').replace('\t', '')
 
 
 def get_coords(address: str):
@@ -51,14 +51,14 @@ def get_info(df: pd.DataFrame):
         status.strip()
 
         desc_raw = soup.find_all('div', class_='full-description__text')[0].find_all('p')[1:-1]
-        description = []
+        description = ''
         for par in desc_raw:
             if len(par) == 1:
-                description.append(par.contents)
-
+                description += par.contents[0]
         coords = get_coords(location)
-        monument = Monument(0, name, location, coords, type, status, description)
+        monument = Monument(0, name, location, coords, type, status, remove_useless(description))
         monuments.append(monument)
+        break
     return monuments
 
 
@@ -94,6 +94,7 @@ def save_info(root: Path, monuments: List[Monument]):
 
         except OSError:
             pass
+        break
 
 
 if __name__ == '__main__':
