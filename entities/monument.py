@@ -11,7 +11,7 @@ class Monument:
     coords: Dict[float, float]
     type: str
     status: str
-    description: List[List[str]]    # list for each paragraph
+    description: str
 
     @property
     def id(self):
