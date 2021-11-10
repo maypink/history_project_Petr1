@@ -1,0 +1,110 @@
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+    height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.popup__bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s all;
+}
+
+.popup__bg.active {
+    opacity: 1;
+    pointer-events: all;
+    transition: 0.5s all;
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 90%;
+    overflow: scroll;
+    transform: translate(-50%, -50%) scale(0);
+    background: #fff;
+    width: 60vw;
+    padding: 25px;
+    transition: 0.5s all;
+}
+
+.popup.active {
+    transform: translate(-50%, -50%) scale(1);
+    transition: 0.5s all;
+}
+
+*::before {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+}
+
+.images::before {
+    content: "Фото";
+}
+
+.images::after {
+    content: '';
+    height: 1px;
+    display: block;
+    background-color: aqua;
+}
+
+.name::before {
+    content: "Название";
+}
+
+.name::after {
+    content: '';
+    height: 1px;
+    display: block;
+    background-color: aqua;
+}
+
+.location::before {
+    content: "Местонахождение";
+}
+
+.location::after {
+    content: '';
+    height: 1px;
+    display: block;
+    background-color: aqua;
+}
+
+.type_of_monument::before {
+    content: "Тип памятника";
+}
+
+.type_of_monument::after {
+    content: '';
+    height: 1px;
+    display: block;
+    background-color: aqua;
+}
+
+.description::before {
+    content: "Описание";
+}
+
+.description::after {
+    content: '';
+    height: 1px;
+    display: block;
+    background-color: aqua;
+}

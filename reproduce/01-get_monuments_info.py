@@ -7,7 +7,26 @@ from tqdm import tqdm
 from bs4 import BeautifulSoup
 import requests as req
 from history_project_Petr1.entities.monument import Monument
+import googlemaps
 
+gmaps = googlemaps.Client(key='AIzaSyDPZrHhcjXo8jFH0_dhJnU46UXGgb6h4tI')
+
+def remove_useless(str: str):
+    return str.replace('\r', '').replace('\n', '').replace('\t', '')
+
+def get_coords(address: str):
+    geocode_result = gmaps.geocode(address)
+    lat = 0
+    lng = 0
+    try:
+        lat = geocode_result[0]['geometry']['location']['lat']
+        lng = geocode_result[0]['geometry']['location']['lng']
+    except Exception as e:
+        print(e)
+        lat = 0
+        lng = 0
+        
+    return lat, lng
 
 def get_info(df: pd.DataFrame):
     monuments = []
@@ -15,23 +34,27 @@ def get_info(df: pd.DataFrame):
         cur_url = 'http://petersmonuments.ru' + i[1].link
         resp = req.get(cur_url)
         soup = BeautifulSoup(resp.text, 'lxml')
-        name = soup.find_all('div', class_='full-description')[0].find_all('h1')[0].contents[0].lstrip().rstrip()
+        name = soup.find_all('div', class_='full-description')[0].find_all('h1')[0].contents[0].strip()
         info = soup.find_all('div', class_='full-description__mini-desc')[0].find_all('p')
         location = info[0].contents[2]
 
         type = ''
         if len(info) > 1:
             type = info[1].contents[2]
+        type.strip()
 
         status = ''
         if len(info) > 2:
             status = info[2].contents[2]
+        status.strip()
 
         desc_raw = soup.find_all('div', class_='full-description__text')[0].find_all('p')[1:-1]
         description = []
         for par in desc_raw:
             if len(par) == 1:
                 description.append(par.contents)
+
+        # lat, lng = get_coords(location)
 
         monument = Monument(name, location, type, status, description)
         monuments.append(monument)
@@ -43,7 +66,7 @@ def check_dir(path: Path):
         if os.path.exists(os.path.join(path, 'processed')):
             return True
         else:
-            os.mkdir(path)
+            os.mkdir(os.path.join(path, 'processed'))
     else:
         os.mkdir(path)
 
