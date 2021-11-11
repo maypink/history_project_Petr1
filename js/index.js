@@ -12,6 +12,7 @@ function initMap() {
 async function getMarkers() {
   let url = 'https://raw.githubusercontent.com/maypink/history_project_Petr1/main/data/processed/coords/coords.json'
   let DB = await(await fetch(url)).json();
+  let markers = []
 
   DB.forEach(elem => {
     const position = { lat: elem.coords.lat, lng: elem.coords.lng };
@@ -33,8 +34,9 @@ async function getMarkers() {
       popupBg.classList.add('active');
       popup.classList.add('active');
     });
+
+    markers.push(marker);
   });
 
-  console.log(DB);
-  console.log(DB[0].lat)
+  new markerClusterer.MarkerClusterer({ markers, map });
 }
