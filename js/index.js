@@ -10,10 +10,11 @@ function initMap() {
 }
 
 async function getMarkers() {
-  let DB = await(await fetch('temp.json')).json();
+  let url = 'https://raw.githubusercontent.com/maypink/history_project_Petr1/main/data/processed/coords/coords.json'
+  let DB = await(await fetch(url)).json();
 
   DB.forEach(elem => {
-    const position = { lat: elem.lat, lng: elem.lng };
+    const position = { lat: elem.coords.lat, lng: elem.coords.lng };
 
     const marker = new google.maps.Marker({
       position,
@@ -26,8 +27,7 @@ async function getMarkers() {
 
     marker.addListener("click", () => {
 
-      // DOWNLOAD JSON FILE WITH NAME ({id}.json)
-      // AND UPDATE VIEW
+      getInfo(marker.id_for_json);
 
       console.log(marker.id_for_json)
       popupBg.classList.add('active');

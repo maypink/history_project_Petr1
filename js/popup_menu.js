@@ -19,6 +19,9 @@ async function getInfo(id) {
     let imageURLs = entity.imageURLs
 
     let images = document.querySelector('.gallery');
+    while (images.firstChild) {
+        images.removeChild(images.lastChild);
+    }
     imageURLs.reverse().forEach(url => {
         let img = document.createElement("img");
         img.setAttribute("src", url);
@@ -36,16 +39,16 @@ async function getInfo(id) {
 
 let popupBg = document.querySelector('.popup__bg');
 let popup = document.querySelector('.popup');
-let open = document.querySelector('.open');
+// let open = document.querySelector('.open');
 
-open.addEventListener('click', (e) => {
-    e.preventDefault();
+// open.addEventListener('click', (e) => {
+//     e.preventDefault();
 
-    getInfo(0)
+//     getInfo(0)
 
-    popupBg.classList.add('active');
-    popup.classList.add('active');
-});
+//     popupBg.classList.add('active');
+//     popup.classList.add('active');
+// });
 
 document.addEventListener('click', (e) => {
     if (e.target === popupBg) {
