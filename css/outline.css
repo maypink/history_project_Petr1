@@ -136,6 +136,7 @@ body {
 .image_inserted {
     margin: 5px;
     width: 60%;
+    object-fit: contain;
 }
 
 @media screen and (max-width: 800px) {
@@ -151,6 +152,11 @@ body {
 
     .image_inserted {
         width: 80%;
+    }
+
+    .popup {
+        height: 80%;
+        width: 80vw;
     }
 }
 
