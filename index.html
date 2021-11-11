@@ -13,90 +13,79 @@
 <body>
     <div id="map"></div>
 
-    <div>
+    <div class="open">
         gdhgfgd
     </div>
 
     <div class="popup__bg">
         <div class="popup">
             <div class="images">
-                Картинки
+                <div class="gallery"></div>
             </div>
             <span class="name">
-                Имя
             </span>
             <div class="info">
                 <span class="location">
-                    Локация
                 </span>
                 <span class="type_of_monument">
-                    Тип строения
                 </span>
                 <span class="status">
-                    Статус
                 </span>
             </div>
             <div class="description">
-                Описание
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus numquam cumque hic, error quis dicta,
-                sit
-                repellendus fuga magnam officiis molestiae id! Quaerat magnam aspernatur officia quibusdam rerum, autem
-                sed.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae enim quasi officiis suscipit voluptate
-                rerum pariatur odit nihil quibusdam, eum quis, voluptatibus quas ipsum laboriosam nesciunt est corporis?
-                Inventore, sed?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur saepe provident magni, eius iusto,
-                debitis nisi excepturi quod odio, explicabo ab recusandae mollitia! Magni placeat porro voluptatibus
-                explicabo consectetur! Consequuntur!
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia necessitatibus perspiciatis explicabo
-                vero eos optio, iste inventore voluptates vitae voluptas expedita cumque ad sapiente enim aperiam ullam
-                laboriosam qui id!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, ducimus ut maxime, voluptatibus natus
-                blanditiis tempore distinctio odio maiores, totam qui non exercitationem tempora delectus velit vitae.
-                Quidem, sunt porro.
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Porro, nulla eius, facilis hic dolorum
-                quisquam quam necessitatibus culpa veniam incidunt accusamus quo? Illo quo facilis ipsam molestiae porro
-                itaque omnis!
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam voluptates corporis cumque obcaecati aut
-                ratione officiis, consequuntur officia nobis. Impedit reprehenderit sequi alias fugit asperiores
-                reiciendis et officiis fugiat non?
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ratione, nesciunt expedita eligendi distinctio
-                aliquam non ipsam corrupti labore ex, deserunt tenetur minus saepe atque. Delectus impedit voluptates
-                totam sint recusandae.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, natus? Esse consequuntur saepe a
-                obcaecati quidem quod totam, nesciunt, minima praesentium doloremque facere maxime suscipit cupiditate
-                ullam, deleniti nulla voluptatum.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo nemo unde laborum omnis a labore quis,
-                obcaecati tenetur quod! Accusantium, magnam quod. Animi eveniet nihil alias architecto inventore sint
-                eum!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit quaerat, omnis labore quo iusto
-                asperiores sequi officiis distinctio. Ad accusamus perspiciatis ex veniam quo. Rem similique unde nulla
-                eligendi ullam!
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia laboriosam nulla perferendis! In sequi
-                iusto, quaerat adipisci sapiente ut eos distinctio ex, illo possimus, voluptatum explicabo recusandae
-                aliquam facere quas.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque voluptatem vel natus? Aliquam quidem,
-                necessitatibus provident dolores, laudantium quod ullam aspernatur nam ducimus quasi placeat quibusdam
-                labore saepe enim eum?
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur delectus perferendis, maiores
-                eveniet amet explicabo suscipit voluptates distinctio. Maxime accusamus, quibusdam deleniti odio
-                voluptates architecto quia doloribus veniam ipsum placeat?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio facilis quia eligendi. Distinctio,
-                minima. Itaque id iure velit esse vero ab praesentium, voluptatum maiores dolorem explicabo! Numquam aut
-                quod reiciendis.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident nobis neque molestiae, dolor ipsam
-                voluptatem maxime obcaecati vitae? Consequuntur unde laudantium, molestiae animi optio laborum a
-                voluptatum suscipit placeat soluta?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, deserunt numquam id facilis enim
-                beatae tenetur quasi dignissimos ducimus dolorem quis? Molestiae beatae quae est id voluptatum
-                excepturi, eveniet aut?
             </div>
         </div>
     </div>
 
     <script>
+        function setValue(selector, value) {
+            let elem = document.querySelector(selector);
+            if (value === "") {
+                elem.style.display = "none";
+            } else {
+                elem.style.display = "inline";
+            }
+            elem.innerHTML = value
+        }
+
+        async function getInfo() {
+            let entity = await (await fetch('1441.json')).json();
+            let name = entity.name
+            let location = entity.location
+            let type = entity.type
+            let status = entity.status
+            let description = entity.description
+            let imageURLs = entity.imageURLs
+
+            let images = document.querySelector('.gallery');
+
+            imageURLs.reverse().forEach(url => {
+                let img = document.createElement("img");
+                img.setAttribute("src", url);
+                img.setAttribute("class", "image_inserted");
+                img.setAttribute("alt", "");
+                images.appendChild(img);
+            });
+
+            setValue('.name', name);
+            setValue('.location', location);
+            setValue('.type_of_monument', type);
+            setValue('.status', status);
+            setValue('.description', description);
+        }
+
         let popupBg = document.querySelector('.popup__bg');
         let popup = document.querySelector('.popup');
+        let open = document.querySelector('.open');
+
+        open.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            getInfo()
+
+            popupBg.classList.add('active');
+            popup.classList.add('active');
+        });
 
         document.addEventListener('click', (e) => {
             if (e.target === popupBg) {

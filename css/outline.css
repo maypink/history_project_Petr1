@@ -119,3 +119,24 @@ body {
     display: block;
     background-color: aqua;
 }
+
+.description {
+    white-space: pre-wrap;
+}
+
+.gallery {
+    display: inline-flex;
+    flex-direction: row;
+    overflow: scroll;
+    max-height: 50vh;
+    padding: 5px;
+    justify-content: space-evenly;
+}
+
+.image_inserted {
+    margin: 5px;
+    /* width: 100%;
+    height: auto;
+    object-fit: contain;
+    width: fit-content; */
+}
