@@ -130,14 +130,9 @@ body {
     overflow: scroll;
     max-height: 50vh;
     padding: 5px;
-    /* justify-content: space-evenly; */
 }
 
 .image_inserted {
     margin: 5px;
     width: 60%;
-    /* width: 100%;
-    height: auto;
-    object-fit: contain;
-    width: fit-content; */
 }
