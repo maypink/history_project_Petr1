@@ -22,7 +22,7 @@ async function getMarkers() {
       title: `${elem.id}`,
       label: `${elem.id}`,
       id_for_json: `${elem.id}`,
-      optimized: false,
+      optimized: true,
     })
 
     marker.addListener("click", () => {
